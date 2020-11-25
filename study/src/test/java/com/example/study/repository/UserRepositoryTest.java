@@ -1,14 +1,16 @@
 package com.example.study.repository;
 
 import com.example.study.StudyApplicationTests;
+import com.example.study.model.entity.Item;
 import com.example.study.model.entity.User;
-//import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Test;
 
 import org.testng.Assert;
-import org.testng.annotations.Test;
+//import org.testng.annotations.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -33,13 +35,25 @@ public class UserRepositoryTest extends StudyApplicationTests {
     }
 
     @Test
+    @Transactional
     public void read(){
 
-        Optional<User> user = userRepository.findById(2L);
+//        Optional<User> user = userRepository.findById(2L);
+//
+//        user.ifPresent(selectUser->{
+//            System.out.println("user : " + selectUser);
+//            System.out.println("email : " +selectUser.getEmail());
+//        });
 
-        user.ifPresent(selectUser->{
-            System.out.println("user : " + selectUser);
-            System.out.println("email : " +selectUser.getEmail());
+        Optional<User> user = userRepository.findById(5L);
+
+        user.ifPresent(selectUser ->{
+            selectUser.getOrderDetailList().stream().forEach(detail -> {
+
+                Item item = detail.getItem();
+
+                System.out.println(item);
+            });
         });
     }
 

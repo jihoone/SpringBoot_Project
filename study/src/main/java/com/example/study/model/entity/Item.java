@@ -24,6 +24,10 @@ public class Item {
 
     private String content;
 
+    //LAZY = 지연로딩 / EAGER = 즉시로딩 -> 1:1추천
+    //LAZY = SELECT * FROM item where id = ?
+    //EAGER = item.id = order_detail.item_id / user_id = order_detail.user_id / where item. id =  ?
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
     private List<OrderDetail> orderDetailList;
 }

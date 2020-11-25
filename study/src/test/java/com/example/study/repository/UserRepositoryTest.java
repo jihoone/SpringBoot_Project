@@ -6,7 +6,6 @@ import com.example.study.model.entity.User;
 import org.junit.jupiter.api.Test;
 
 import org.testng.Assert;
-//import org.testng.annotations.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -23,11 +22,11 @@ public class UserRepositoryTest extends StudyApplicationTests {
     public void create(){
         User user = new User();
 
-        user.setAccount("TestUser03");
-        user.setEmail("TestUser03@gmail.com");
-        user.setPhoneNumber("010-1111-3333");
+        user.setAccount("TestUser04");
+        user.setEmail("TestUser04@gmail.com");
+        user.setPhoneNumber("010-1111-4444");
         user.setCreatedAt(LocalDateTime.now());
-        user.setCreatedBy("TestUser3");
+        user.setCreatedBy("TestUser4");
 
         User newUser = userRepository.save(user);
         System.out.println("new User : " + newUser);
@@ -45,7 +44,9 @@ public class UserRepositoryTest extends StudyApplicationTests {
 //            System.out.println("email : " +selectUser.getEmail());
 //        });
 
-        Optional<User> user = userRepository.findById(5L);
+//        Optional<User> user = userRepository.findById(5L);
+
+        Optional<User> user = userRepository.findByAccount("TestUser03");
 
         user.ifPresent(selectUser ->{
             selectUser.getOrderDetailList().stream().forEach(detail -> {
@@ -90,7 +91,7 @@ public class UserRepositoryTest extends StudyApplicationTests {
 
     @Test
     public void delete(){
-        Optional<User> user = userRepository.findById(2L);
+        Optional<User> user = userRepository.findById(4L);
 
         Assert.assertTrue(user.isPresent());
 
@@ -98,7 +99,7 @@ public class UserRepositoryTest extends StudyApplicationTests {
             userRepository.delete(selectUser);
         });
 
-        Optional<User> deleteUser = userRepository.findById(2L);
+        Optional<User> deleteUser = userRepository.findById(4L);
 
         Assert.assertFalse(deleteUser.isPresent());
     }

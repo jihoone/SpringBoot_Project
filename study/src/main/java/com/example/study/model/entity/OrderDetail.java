@@ -1,59 +1,29 @@
 package com.example.study.model.entity;
 
-import lombok.*;
-import lombok.experimental.Accessors;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-//@ToString(exclude = {"user" , "item"})
-@EntityListeners(AuditingEntityListener.class)
-@Builder
-@Accessors(chain = true)
+@ToString(exclude = {"user" , "item"})
 public class OrderDetail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String status;
+    private LocalDateTime orderAt;
 
-    private LocalDateTime arrivalDate;
+    @ManyToOne
+    private User user; //user_id
 
-    private Integer quantity;
-
-    private BigDecimal totalPrice;
-
-    @CreatedDate
-    private LocalDateTime createdAt;
-
-    @CreatedBy
-    private String createdBy;
-
-    @LastModifiedDate
-    private LocalDateTime updatedAt;
-
-    @LastModifiedBy
-    private String updatedBy;
-
-
-//    private LocalDateTime orderAt;
-
-
-
-//    @ManyToOne
-//    private User user; //user_id
-//
-//    @ManyToOne
-//    private Item item; //item_id
+    @ManyToOne
+    private Item item; //item_id
 }

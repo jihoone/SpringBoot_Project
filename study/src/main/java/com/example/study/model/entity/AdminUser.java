@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import org.hibernate.criterion.Order;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -14,32 +13,33 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Builder
 @Accessors(chain = true)
-public class Item {
+public class AdminUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String account;
+
+    private String password;
+
     private String status;
 
-    private String name;
+    private String role;
 
-    private String title;
+    private LocalDateTime lastLoginAt;
 
-    private String content;
+    private LocalDateTime passwordUpdatedAt;
 
-    private Integer price;
-
-    private String brandName;
+    private int loginFailCount;
 
     private LocalDateTime registeredAt;
 
@@ -57,11 +57,4 @@ public class Item {
     @LastModifiedBy
     private String updatedBy;
 
-
-    //LAZY = 지연로딩 / EAGER = 즉시로딩 -> 1:1추천
-    //LAZY = SELECT * FROM item where id = ?
-    //EAGER = item.id = order_detail.item_id / user_id = order_detail.user_id / where item. id =  ?
-
-//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
-//    private List<OrderDetail> orderDetailList;
 }

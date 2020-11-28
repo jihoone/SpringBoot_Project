@@ -20,16 +20,38 @@ public class UserRepositoryTest extends StudyApplicationTests {
 
     @Test
     public void create(){
-        User user = new User();
+//        User user = new User();
+//
+//        user.setAccount("TestUser04");
+//        user.setEmail("TestUser04@gmail.com");
+//        user.setPhoneNumber("010-1111-4444");
+//        user.setCreatedAt(LocalDateTime.now());
+//        user.setCreatedBy("TestUser4");
+//
+//        User newUser = userRepository.save(user);
+//        System.out.println("new User : " + newUser);
 
-        user.setAccount("TestUser04");
-        user.setEmail("TestUser04@gmail.com");
-        user.setPhoneNumber("010-1111-4444");
-        user.setCreatedAt(LocalDateTime.now());
-        user.setCreatedBy("TestUser4");
+        String account = "Test01";
+        String password = "Test01";
+        String status = "REGISTERED";
+        String email = "Test01@gmail.com";
+        String phoneNumber = "010-1111-2222";
+        LocalDateTime registeredAt = LocalDateTime.now();
+        LocalDateTime createdAt = LocalDateTime.now();
+        String createdBy = "AdminServer";
+
+        User user = new User();
+        user.setAccount(account);
+        user.setPassword(password);
+        user.setStatus(status);
+        user.setEmail(email);
+        user.setPhoneNumber(phoneNumber);
+        user.setRegisteredAt(registeredAt);
+        user.setCreatedAt(createdAt);
+        user.setCreatedBy(createdBy);
 
         User newUser = userRepository.save(user);
-        System.out.println("new User : " + newUser);
+        Assert.assertNotNull(newUser);
 
     }
 
@@ -46,16 +68,37 @@ public class UserRepositoryTest extends StudyApplicationTests {
 
 //        Optional<User> user = userRepository.findById(5L);
 
-        Optional<User> user = userRepository.findByAccount("TestUser03");
+//        Optional<User> user = userRepository.findByAccount("TestUser03");
+//
+//        user.ifPresent(selectUser ->{
+//            selectUser.getOrderDetailList().stream().forEach(detail -> {
+//
+//                Item item = detail.getItem();
+//
+//                System.out.println(item);
+//            });
+//        });
 
-        user.ifPresent(selectUser ->{
-            selectUser.getOrderDetailList().stream().forEach(detail -> {
+        User user = userRepository.findFirstByPhoneNumberOrderByIdDesc("010-1111-2222");
 
-                Item item = detail.getItem();
+        user.getOrderGroupList().stream().forEach(orderGroup -> {
+            System.out.println("---------------- 주문묶음-------------------");
+            System.out.println("수령인 : " + orderGroup.getRevName());
+            System.out.println("수령자 : " + orderGroup.getRevAddress());
+            System.out.println("총금액 : " + orderGroup.getTotalPrice());
+            System.out.println("총수량 : " + orderGroup.getTotalQuantity());
 
-                System.out.println(item);
+            System.out.println("---------------주문상세---------------------");
+            orderGroup.getOrderDetailList().forEach(orderDetail -> {
+                System.out.println("파트너사 이름 : " + orderDetail.getItem().getPartner().getName());
+                System.out.println("파트너사 카테고리 : " + orderDetail.getItem().getPartner().getCategory().getTitle());
+                System.out.println("주문상품 : " + orderDetail.getItem().getName());
+                System.out.println("고객센터 번호" + orderDetail.getItem().getPartner().getCallCenter());
+                System.out.println("주문의 상태 : " + orderDetail.getStatus());
+                System.out.println("도착예정일자 : " + orderDetail.getArrivalDate());
             });
         });
+        Assert.assertNotNull(user);
     }
 
     @Test

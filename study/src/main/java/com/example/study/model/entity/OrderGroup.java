@@ -2,7 +2,6 @@ package com.example.study.model.entity;
 
 import lombok.*;
 import lombok.experimental.Accessors;
-import org.hibernate.criterion.Order;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -10,18 +9,19 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Builder
 @Accessors(chain = true)
-@ToString(exclude = {"orderDetailList", "partner"})
-public class Item {
+@ToString(exclude = {"user", "orderDetailList"})
+public class OrderGroup {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,19 +29,21 @@ public class Item {
 
     private String status;
 
-    private String name;
+    private String orderType;
 
-    private String title;
+    private String revAddress;
 
-    private String content;
+    private String revName;
 
-    private Integer price;
+    private String paymentType;
 
-    private String brandName;
+    private BigDecimal totalPrice;
 
-    private LocalDateTime registeredAt;
+    private Integer totalQuantity;
 
-    private LocalDateTime unregisteredAt;
+    private LocalDateTime orderAt;
+
+    private LocalDateTime arrivalDate;
 
     @CreatedDate
     private LocalDateTime createdAt;
@@ -55,19 +57,12 @@ public class Item {
     @LastModifiedBy
     private String updatedBy;
 
-//    private Long partnerId;
+   // private Long userId;
 
     @ManyToOne
-    private Partner partner;
+    private User user;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "orderGroup")
     private List<OrderDetail> orderDetailList;
 
-
-    //LAZY = 지연로딩 / EAGER = 즉시로딩 -> 1:1추천
-    //LAZY = SELECT * FROM item where id = ?
-    //EAGER = item.id = order_detail.item_id / user_id = order_detail.user_id / where item. id =  ?
-
-//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
-//    private List<OrderDetail> orderDetailList;
 }
